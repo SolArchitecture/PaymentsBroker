@@ -1,0 +1,17 @@
+﻿version: '3'
+
+services:
+  paymentsbroker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${DOCKER_REGISTRY-}paymentsbroker
+    ports:
+      - "8088:8088"
+    depends_on:
+      - paymentsmongo
+  paymentsmongo:
+    image: mongo:latest
+    container_name: paymentsmongo
+    ports:
+      - "27020:27017"

@@ -55,9 +55,15 @@ public class PaymentConsumer : BackgroundService
                 Timestamp = paymentMessage.Timestamp
             };
 
-            await _paymentRepository.AddPayment(pd);
-            
-            
+            using (IServiceScope scope = _serviceProvider.CreateScope())
+            {
+                PaymentRepository _paymentRepository =
+                    scope.ServiceProvider.GetRequiredService<PaymentRepository>();
+                
+                await _paymentRepository.AddPayment(pd);
+                
+            }
+
             await Task.Yield();
         };
 

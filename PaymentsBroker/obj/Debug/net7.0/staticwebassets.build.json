@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ke9yiYQweemdFFOHCKFsJ21bJuinJe5jx4EV+Hu50tM=",
+  "Source": "PaymentsBroker",
+  "BasePath": "_content/PaymentsBroker",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

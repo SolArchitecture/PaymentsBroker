@@ -11,7 +11,7 @@ public class PaymentDatabaseSettings
     
     public PaymentDatabaseSettings()
     {
-        ConnectionString = "mongodb://mongodb:27020";
+        ConnectionString = "mongodb://paymentsmongo:27017";
         DatabaseName = "payments";
         CollectionName = "payment-events";
     }

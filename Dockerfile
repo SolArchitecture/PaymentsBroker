@@ -1,20 +1,24 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+﻿# Use the official .NET SDK 7.0 image as the build environment
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["PaymentsBroker/PaymentsBroker.csproj", "PaymentsBroker/"]
-RUN dotnet restore "PaymentsBroker/PaymentsBroker.csproj"
-COPY . .
-WORKDIR "/src/PaymentsBroker"
-RUN dotnet build "PaymentsBroker.csproj" -c Release -o /app/build
+# Copy the project files and restore any dependencies
+COPY *.sln ./
+COPY PaymentsBroker/*.csproj ./PaymentsBroker/
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "PaymentsBroker.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Copy the rest of the application code and publish the Webshop project
+COPY . ./
+RUN dotnet publish PaymentsBroker -c Release -o out
 
-FROM base AS final
+# Use the official .NET Runtime 7.0 image as the runtime environment
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build-env /app/out .
+
+# Expose the port and start the application
+ENV ASPNETCORE_URLS=http://0.0.0.0:8088
+
+EXPOSE 8088
+
 ENTRYPOINT ["dotnet", "PaymentsBroker.dll"]

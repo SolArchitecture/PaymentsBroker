@@ -1,5 +1,6 @@
 using PaymentsBroker.Consumers;
 using PaymentsBroker.Mongo;
+using PaymentsBroker.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.Configure<PaymentDatabaseSettings>(
 
 builder.Services.AddHostedService<PaymentConsumer>();
 
+builder.Services.AddSingleton<PaymentRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
