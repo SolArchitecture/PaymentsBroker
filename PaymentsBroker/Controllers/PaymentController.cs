@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using PaymentsBroker.Handlers;
+using PaymentsBroker.Mongo;
+using PaymentsBroker.Queries;
 using PaymentsBroker.Repository;
 
 namespace PaymentsBroker.Controllers;
@@ -7,18 +10,18 @@ namespace PaymentsBroker.Controllers;
 [Route("api/")]
 public class PaymentController : ControllerBase
 {
-    private readonly PaymentRepository _paymentRepository;
-    
-    public PaymentController(PaymentRepository paymentRepository)
+    private readonly IQueryHandler<GetPaymentQuery, List<PaymentEventDocument>> _getPaymentsQuery;
+
+    public PaymentController(IQueryHandler<GetPaymentQuery, List<PaymentEventDocument>> getPaymentsQuery)
     {
-        _paymentRepository = paymentRepository;
+        _getPaymentsQuery = getPaymentsQuery;
     }
 
     [HttpGet("payment")]
     public async Task<IActionResult> GetPaymentEvents()
     {
-        var payments = await _paymentRepository.GetAllPayments();
-
+        GetPaymentQuery pq = new GetPaymentQuery();
+        var payments = await _getPaymentsQuery.Handle(pq, CancellationToken.None);
         return Ok(payments);
     }
 }
