@@ -13,4 +13,17 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MongoDB.Bson" Version="2.19.1" />
+      <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Handlers\" />
+      <Folder Include="Queries\" />
+    </ItemGroup>
+
 </Project>
