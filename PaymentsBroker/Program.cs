@@ -1,6 +1,7 @@
 using PaymentsBroker.Consumers;
 using PaymentsBroker.Handlers;
 using PaymentsBroker.Mongo;
+using PaymentsBroker.Producers;
 using PaymentsBroker.Queries;
 using PaymentsBroker.Repository;
 
@@ -12,6 +13,7 @@ builder.Services.Configure<PaymentDatabaseSettings>(
 builder.Services.AddHostedService<PaymentConsumer>();
 
 builder.Services.AddSingleton<PaymentRepository>();
+builder.Services.AddSingleton<PaymentProducer>();
 
 builder.Services.AddScoped<IQueryHandler<GetPaymentQuery, List<PaymentEventDocument>>, GetPaymentsQueryHandler>();
 

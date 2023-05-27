@@ -1,6 +1,7 @@
 using System.Text.Json;
 using PaymentsBroker.Messages;
 using PaymentsBroker.Mongo;
+using PaymentsBroker.Producers;
 using PaymentsBroker.Repository;
 
 namespace PaymentsBroker.Consumers;
@@ -59,9 +60,12 @@ public class PaymentConsumer : BackgroundService
             {
                 PaymentRepository _paymentRepository =
                     scope.ServiceProvider.GetRequiredService<PaymentRepository>();
+
+                PaymentProducer _paymentProducer =
+                    scope.ServiceProvider.GetRequiredService<PaymentProducer>();
                 
                 await _paymentRepository.AddPayment(pd);
-                
+                _paymentProducer.PaymentConfirmed(pd);
             }
 
             await Task.Yield();
