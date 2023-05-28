@@ -65,7 +65,7 @@ public class PaymentConsumer : BackgroundService
                     scope.ServiceProvider.GetRequiredService<PaymentProducer>();
                 
                 await _paymentRepository.AddPayment(pd);
-                _paymentProducer.PaymentConfirmed(pd);
+                _paymentProducer.PaymentConfirmed(paymentMessage);
             }
 
             await Task.Yield();
