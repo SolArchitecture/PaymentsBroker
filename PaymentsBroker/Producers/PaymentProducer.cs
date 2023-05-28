@@ -22,7 +22,7 @@ public class PaymentProducer
         var json = JsonSerializer.Serialize(message);
         var body = Encoding.UTF8.GetBytes(json);
 
-        channel.QueueDeclare("payment_confirmed", exclusive: false, durable: true);
+        channel.QueueDeclare("payment_confirmed", exclusive: false, durable: true, autoDelete: false);
 
         channel.QueueBind(exchange: "payment_broker_exchange", queue: "payment_confirmed", routingKey: "payment");
 

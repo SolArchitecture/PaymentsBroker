@@ -34,9 +34,9 @@ public class PaymentConsumer : BackgroundService
         using var channel = connection.CreateModel();
 
         channel.QueueDeclare(queue: "payments",
-            durable: false,
+            durable: true,
             exclusive: false,
-            autoDelete: true,
+            autoDelete: false,
             arguments: null);
 
         var consumer = new EventingBasicConsumer(channel);
@@ -65,7 +65,7 @@ public class PaymentConsumer : BackgroundService
                     scope.ServiceProvider.GetRequiredService<PaymentProducer>();
                 
                 await _paymentRepository.AddPayment(pd);
-                _paymentProducer.PaymentConfirmed(pd);
+                _paymentProducer.PaymentConfirmed(paymentMessage);
             }
 
             await Task.Yield();
